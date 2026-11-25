@@ -136,7 +136,8 @@ static constexpr const auto Menu_LegoInitIDs = array_of<uint32>(
 
 	IDM_RENDERING_DRAW, IDM_RENDERING_IMAGES, IDM_RENDERING_FONTS,
 	IDM_TRANSPARENTMULTISELECT, IDM_TOPDOWNLOD_LOW, IDM_TOPDOWNLOD_MEDIUM, IDM_TOPDOWNLOD_HIGH,
-	IDM_NOPOWERCONSUMPTION, IDM_NOOXYGENCONSUMPTION, IDM_SUPERTOOLSTORE, IDM_SHOWTOOLTIPS
+	IDM_NOPOWERCONSUMPTION, IDM_NOOXYGENCONSUMPTION, IDM_SUPERTOOLSTORE, IDM_UNLIMITEDCRYSTALS,
+	IDM_SHOWTOOLTIPS
 );
 
 static constexpr const auto Menu_InLevelIDs = array_of<uint32>(
@@ -293,6 +294,7 @@ void __cdecl OpenLRR_UpdateMenuItems(void)
 	Menu_CheckButton(IDM_NOPOWERCONSUMPTION,	(LegoRR::Lego_IsInit() && LegoRR::Cheat_IsNoPowerConsumption()));
 	Menu_CheckButton(IDM_NOOXYGENCONSUMPTION,	(LegoRR::Lego_IsInit() && LegoRR::Cheat_IsNoOxygenConsumption()));
 	Menu_CheckButton(IDM_SUPERTOOLSTORE,		(LegoRR::Lego_IsInit() && LegoRR::Cheat_IsSuperToolStore()));
+	Menu_CheckButton(IDM_UNLIMITEDCRYSTALS,	(LegoRR::Lego_IsInit() && LegoRR::Cheat_IsUnlimitedCrystals()));
 
 	Menu_EnableButton(IDM_SURVEYLEVEL,		(LegoRR::Lego_IsInLevel() && !LegoRR::Lego_IsLevelSurveyed()));
 
@@ -833,6 +835,10 @@ void __cdecl OpenLRR_HandleCommand(HWND hWnd, uint16 wmId, uint16 wmSrc)
 
 	case IDM_SUPERTOOLSTORE:
 		LegoRR::Cheat_SetSuperToolStore(!LegoRR::Cheat_IsSuperToolStore());
+		break;
+
+	case IDM_UNLIMITEDCRYSTALS:
+		LegoRR::Cheat_SetUnlimitedCrystals(!LegoRR::Cheat_IsUnlimitedCrystals());
 		break;
 
 

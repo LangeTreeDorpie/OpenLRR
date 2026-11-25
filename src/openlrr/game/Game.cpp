@@ -158,6 +158,11 @@ static bool _cheatNoConstructionBarriers = false;
 static bool _cheatNoPowerConsumption = false;
 static bool _cheatNoOxygenConsumption = false;
 static bool _cheatSuperToolStore = false;
+static bool _cheatUnlimitedCrystals = false;
+
+// The crystal count is capped to this huge value while the unlimited crystals cheat is enabled.
+// Far above any building/teleporter crystal cost, but small enough that the UI can display it.
+constexpr sint32 _unlimitedCrystalsCap = 999;
 
 static bool _legoTransparentMultiSelectBox = true;
 static bool _legoShowToolTips = true;
@@ -256,6 +261,33 @@ bool LegoRR::Cheat_IsSuperToolStore()
 void LegoRR::Cheat_SetSuperToolStore(bool on)
 {
 	_cheatSuperToolStore = on;
+}
+
+bool LegoRR::Cheat_IsUnlimitedCrystals()
+{
+	return _cheatUnlimitedCrystals;
+}
+
+void LegoRR::Cheat_SetUnlimitedCrystals(bool on)
+{
+	if (_cheatUnlimitedCrystals != on) {
+		_cheatUnlimitedCrystals = on;
+		// Allow toggling the cheat when outside of a level.
+		if (Lego_IsInLevel()) {
+			LegoObject_RequestPowerGridUpdate();
+		}
+	}
+}
+
+/// CUSTOM: Called once per frame while in a level. Caps the stored crystal count to a huge value
+/// so that building/teleporter crystal costs can never deplete the supply while the cheat is on.
+void LegoRR::Cheat_UnlimitedCrystals_Tick()
+{
+	if (_cheatUnlimitedCrystals && legoGlobs.currLevel != nullptr) {
+		if (legoGlobs.currLevel->crystals < _unlimitedCrystalsCap) {
+			legoGlobs.currLevel->crystals = _unlimitedCrystalsCap;
+		}
+	}
 }
 
 
@@ -2567,6 +2599,10 @@ void __cdecl LegoRR::Lego_HandleWorldDebugKeys(sint32 mbx, sint32 mby, LegoObjec
 	/// CHEAT KEYBIND: NULL  "Increases the number of stored ore by 5."
 	if (Shortcut_IsPressed(ShortcutID::Cheat_IncreaseOreStored)) {
 		Level_AddOreStored(false, 5);
+	}
+	/// CHEAT KEYBIND: NULL  "Toggles unlimited stored crystals. While ON, crystals can never run out."
+	if (Shortcut_IsPressed(ShortcutID::Cheat_UnlimitedCrystals)) {
+		Cheat_SetUnlimitedCrystals(!Cheat_IsUnlimitedCrystals());
 	}
 
 	/// DEBUG KEYBIND: NULL  "Toggles the power of a building, or the sleeping state of a monster."

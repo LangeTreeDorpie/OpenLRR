@@ -836,6 +836,13 @@ void Cheat_SetNoOxygenConsumption(bool on);
 bool Cheat_IsSuperToolStore();
 void Cheat_SetSuperToolStore(bool on);
 
+// While enabled, the number of stored crystals is capped to a huge value every frame, so it
+// never depletes no matter how many are used up on building and teleporter costs.
+bool Cheat_IsUnlimitedCrystals();
+void Cheat_SetUnlimitedCrystals(bool on);
+// Called once per frame while in a level; caps the stored crystal count to a huge value.
+void Cheat_UnlimitedCrystals_Tick();
+
 // Marks all blocks in the level as scanned, so that they'll show up on the radar.
 void Cheat_SurveyLevel();
 

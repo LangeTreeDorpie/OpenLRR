@@ -133,6 +133,7 @@ bool Shortcuts::ShortcutManager::Initialise()
 	Shortcut_Register(Edit_PlaceOre, nullptr);
 	Shortcut_Register(Cheat_IncreaseCrystalsStored, nullptr);
 	Shortcut_Register(Cheat_IncreaseOreStored, nullptr);
+	Shortcut_Register(Cheat_UnlimitedCrystals, nullptr);
 	
 	Shortcut_Register(ToggleMusic, "KEY_M");
 	Shortcut_Register(ToggleSound, "KEY_S");
