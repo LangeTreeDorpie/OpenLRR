@@ -843,6 +843,13 @@ void Cheat_SetUnlimitedCrystals(bool on);
 // Called once per frame while in a level; caps the stored crystal count to a huge value.
 void Cheat_UnlimitedCrystals_Tick();
 
+// While enabled, the number of stored ore (raw and refined/studs) is capped to a huge value
+// every frame, so it never depletes no matter how many are used up on building/upgrade costs.
+bool Cheat_IsUnlimitedOre();
+void Cheat_SetUnlimitedOre(bool on);
+// Called once per frame while in a level; caps the stored ore and stud counts to a huge value.
+void Cheat_UnlimitedOre_Tick();
+
 // Marks all blocks in the level as scanned, so that they'll show up on the radar.
 void Cheat_SurveyLevel();
 

@@ -1123,6 +1123,9 @@ bool32 __cdecl LegoRR::Lego_MainLoop(real32 elapsed)
 	// CHEAT: While the "unlimited crystals" cheat is on, cap the stored crystal count to a huge
 	// value so that building/teleporter crystal costs can never deplete the supply.
 	Cheat_UnlimitedCrystals_Tick();
+	// CHEAT: While the "unlimited ore" cheat is on, cap the stored ore and stud counts to a huge
+	// value so that building/upgrade ore costs can never deplete the supply.
+	Cheat_UnlimitedOre_Tick();
 
 	// Input keyDown* parameters are obtained from `Lego_HandleKeys`.
 	// Handle input/interactions between world and UI.

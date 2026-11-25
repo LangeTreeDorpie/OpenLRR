@@ -169,6 +169,9 @@ enum ShortcutID
 	/// NEW: Toggles unlimited stored crystals. While ON, the stored crystal count is capped at a
 	/// huge value and refilled every frame so it never depletes, no matter how many are used up.
 	Cheat_UnlimitedCrystals, // NULL
+	/// NEW: Toggles unlimited stored ore. While ON, the stored ore and stud counts are capped at
+	/// a huge value and refilled every frame so they never deplete, no matter how many are used up.
+	Cheat_UnlimitedOre, // NULL
 
 	// Toggles music ON/OFF.
 	ToggleMusic, // [M]

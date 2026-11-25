@@ -188,6 +188,7 @@
 #define IDM_QUICKREINFORCE				414
 #define IDM_PEACEFUL					415
 #define IDM_UNLIMITEDCRYSTALS			416
+#define IDM_UNLIMITEDORE				417
 // --------------
 #define IDM_SURVEYLEVEL					419
 // --------------

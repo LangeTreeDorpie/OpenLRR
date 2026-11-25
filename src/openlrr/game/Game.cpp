@@ -159,10 +159,14 @@ static bool _cheatNoPowerConsumption = false;
 static bool _cheatNoOxygenConsumption = false;
 static bool _cheatSuperToolStore = false;
 static bool _cheatUnlimitedCrystals = false;
+static bool _cheatUnlimitedOre = false;
 
 // The crystal count is capped to this huge value while the unlimited crystals cheat is enabled.
 // Far above any building/teleporter crystal cost, but small enough that the UI can display it.
 constexpr sint32 _unlimitedCrystalsCap = 999;
+// The ore/stud counts are capped to this huge value while the unlimited ore cheat is enabled.
+// Far above any building/upgrade ore or stud cost, but small enough that the UI can display it.
+constexpr sint32 _unlimitedOreCap = 999;
 
 static bool _legoTransparentMultiSelectBox = true;
 static bool _legoShowToolTips = true;
@@ -286,6 +290,36 @@ void LegoRR::Cheat_UnlimitedCrystals_Tick()
 	if (_cheatUnlimitedCrystals && legoGlobs.currLevel != nullptr) {
 		if (legoGlobs.currLevel->crystals < _unlimitedCrystalsCap) {
 			legoGlobs.currLevel->crystals = _unlimitedCrystalsCap;
+		}
+	}
+}
+
+bool LegoRR::Cheat_IsUnlimitedOre()
+{
+	return _cheatUnlimitedOre;
+}
+
+void LegoRR::Cheat_SetUnlimitedOre(bool on)
+{
+	if (_cheatUnlimitedOre != on) {
+		_cheatUnlimitedOre = on;
+		// Allow toggling the cheat when outside of a level.
+		if (Lego_IsInLevel()) {
+			LegoObject_RequestPowerGridUpdate();
+		}
+	}
+}
+
+/// CUSTOM: Called once per frame while in a level. Caps the stored ore and stud counts to a huge
+/// value so that building/upgrade ore and stud costs can never deplete the supply while on.
+void LegoRR::Cheat_UnlimitedOre_Tick()
+{
+	if (_cheatUnlimitedOre && legoGlobs.currLevel != nullptr) {
+		if (legoGlobs.currLevel->ore < _unlimitedOreCap) {
+			legoGlobs.currLevel->ore = _unlimitedOreCap;
+		}
+		if (legoGlobs.currLevel->studs < _unlimitedOreCap) {
+			legoGlobs.currLevel->studs = _unlimitedOreCap;
 		}
 	}
 }
@@ -2603,6 +2637,10 @@ void __cdecl LegoRR::Lego_HandleWorldDebugKeys(sint32 mbx, sint32 mby, LegoObjec
 	/// CHEAT KEYBIND: NULL  "Toggles unlimited stored crystals. While ON, crystals can never run out."
 	if (Shortcut_IsPressed(ShortcutID::Cheat_UnlimitedCrystals)) {
 		Cheat_SetUnlimitedCrystals(!Cheat_IsUnlimitedCrystals());
+	}
+	/// CHEAT KEYBIND: NULL  "Toggles unlimited stored ore. While ON, ore can never run out."
+	if (Shortcut_IsPressed(ShortcutID::Cheat_UnlimitedOre)) {
+		Cheat_SetUnlimitedOre(!Cheat_IsUnlimitedOre());
 	}
 
 	/// DEBUG KEYBIND: NULL  "Toggles the power of a building, or the sleeping state of a monster."
